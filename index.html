@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Test Document</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+	<script src="js/jquery-2.2.3.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/script.js"></script>
+</head>
+<body>
+	<div ng-app="validationApp" ng-controller="mainController">
+		<div class="container">
+			<div class="row">  	   
+				<div class="col-sm-6">
+				  	<h3>Contact Form</h3>
+				    <form name="userForm" ng-submit="submitForm()" novalidate >
+				        <div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
+				            <label>Name</label>
+				            <input type="text" name="name" class="form-control" ng-model="user.name" pattern="[A-Za-zА-Яа-яЁё]+$" required />
+				            <div ng-show="userForm.name.$invalid && !userForm.name.$pristine">
+					            <p ng-show="userForm.name.$error.required" class="help-block">Your name is required.</p>
+					            <p ng-show="userForm.name.$error.pattern" class="help-block">Enter the correct name.</p>
+				            </div>
+				        </div>
+				        <div class="form-group" ng-class="{ 'has-error' : userForm.surname.$invalid && !userForm.surname.$pristine }">
+				            <label>Surname</label>
+				            <input type="text" name="surname" class="form-control" ng-model="user.surname" pattern="[A-Za-zА-Яа-яЁё]+$" required />
+					        <div ng-show="userForm.surname.$invalid && !userForm.surname.$pristine">
+					            <p ng-show="userForm.surname.$error.required" class="help-block">Your surname is required.</p>
+					            <p ng-show="userForm.surname.$error.pattern" class="help-block">Enter the correct surname.</p>
+					        </div>    
+				        </div>
+				        <div class="form-group" ng-class="{ 'has-error' : userForm.phone.$invalid && !userForm.phone.$pristine }">
+				            <label>Phone</label>
+				            <input type="text" phone-input name="phone" class="form-control" ng-model="user.phone" ng-minlength="8" required />
+				            <div ng-show="userForm.phone.$invalid && !userForm.phone.$pristine">
+				            	<p ng-show="userForm.phone.$error.required" class="help-block">Your phone number is required.</p>
+				            	<p ng-show="userForm.phone.$error.minlength" class="help-block">Phone number is too short.</p>
+				            </div>	
+				        </div>
+				        <div class="form-group" ng-class="{ 'has-error' : userForm.age.$invalid && !userForm.age.$pristine }">
+				            <label>Age</label>
+				            <input type="text" name="age" class="form-control" ng-model="user.age" pattern="[0-9]{1,2}" required />
+				            <div ng-show="userForm.age.$invalid && !userForm.age.$pristine">
+					            <p ng-show="userForm.age.$error.required" class="help-block">Your age is required.</p>
+					            <p ng-show="userForm.age.$error.pattern" class="help-block">Your age, from 0 to 99.</p>
+				            </div>  
+				        </div>
+				        <div class="form-group" >
+				            <label>Gender</label><br>
+				            <input type="radio" ng-model="user.gander" value="male" required> Male
+							<input type="radio" ng-model="user.gander" value="female" required> Female
+				            <div ng-show="userForm.gender.$invalid && !userForm.gender.$pristine">
+					            <p ng-show="userForm.gender.$error.required" class="help-block">Your gender is required.</p>
+				            </div>  							
+				        </div>
+				        <button type="submit" class="btn btn-primary" ng-disabled="userForm.$invalid" ng-click="addLine()">Add record</button>			        
+				    </form>
+				</div>
+				<div class="col-sm-6">
+					<h3>Contacts</h3>
+					<div class="alert alert-info">
+					    <p>Sort Type: {{ sortType }}</p>
+					    <p>Sort Reverse: {{ sortReverse }}</p>
+					    <p>Search Query: {{ searchContact }}</p>
+					</div>
+					<form>
+					  <div class="form-group">
+					    <div class="input-group">
+					      <div class="input-group-addon"><i class="fa fa-search"></i></div>
+					      <input type="text" class="form-control" placeholder="Search a contact" ng-model="searchContact">
+					    </div>
+					  </div>
+					</form>
+		            <table class="table table-bordered table-striped">
+						<thead>
+					      <tr>
+					        <td>
+								<a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+									Name
+									<span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+								</a>
+					        </td>
+					        <td>
+								<a href="#" ng-click="sortType = 'surname'; sortReverse = !sortReverse">
+									Surname
+									<span ng-show="sortType == 'surname' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'surname' && sortReverse" class="fa fa-caret-up"></span>
+								</a>
+					        </td>
+					        <td>
+								<a href="#" ng-click="sortType = 'phone'; sortReverse = !sortReverse">
+									Phone
+									<span ng-show="sortType == 'phone' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'phone' && sortReverse" class="fa fa-caret-up"></span>
+								</a>
+					        </td>
+					        <td>
+								<a href="#" ng-click="sortType = 'age'; sortReverse = !sortReverse">
+									Age
+									<span ng-show="sortType == 'age' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'age' && sortReverse" class="fa fa-caret-up"></span>
+								</a>
+					        </td>
+					        <td>
+								<a href="#" ng-click="sortType = 'gender'; sortReverse = !sortReverse">
+									Gender
+									<span ng-show="sortType == 'gender' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'gender' && sortReverse" class="fa fa-caret-up"></span>
+								</a>
+					        </td>
+					      </tr>
+					    </thead>
+					    <tbody>
+					      <tr ng-repeat="person in persons | orderBy:sortType:sortReverse | filter:searchContact">
+					        <td>{{ person.name }}</td>
+					        <td>{{ person.surname }}</td>
+					        <td>{{ person.phone }}</td>
+					        <td>{{ person.age }}</td>
+					        <td>{{ person.gender }}</td>							        
+					      </tr>
+					      <tr>
+					        <td>{{ user.name }}</td>
+					        <td>{{ user.surname }}</td>
+					        <td>{{ user.phone }}</td>
+					        <td>{{ user.age }}</td>
+					        <td>{{ user.gander }}</td>							        
+					      </tr>
+					    </tbody>
+					</table>
+					<button class="btn btn-danger" ng-click="removeChoice()">Remove last</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+</body>
+</html>
